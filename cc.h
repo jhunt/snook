@@ -24,6 +24,22 @@ struct __sym {
 	char *name;
 };
 
+struct __syment {
+	sym_t            symbol;
+	struct __syment *next;
+};
+typedef struct __symtab *symtab_t;
+struct __symtab {
+	struct __syment *first;
+};
+
+symtab_t
+new_symbol_table();
+sym_t
+intern(symtab_t table, const char *name);
+sym_t
+lookup(symtab_t table, const char *name);
+
 typedef struct __thing *thing_t;
 typedef struct __sexpr *sexpr_t;
 
@@ -46,7 +62,7 @@ struct __sexpr {
 };
 
 sexpr_t
-snook_read(FILE *io, const char *name);
+snook_read(FILE *io, const char *name, symtab_t symbols);
 
 int
 snook_write(FILE *out, sexpr_t s);

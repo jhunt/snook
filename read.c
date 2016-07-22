@@ -40,20 +40,6 @@ s_new_fixnum_thing(int x)
 	return t;
 }
 
-static thing_t
-s_new_sym_thing(const char *x)
-{
-	thing_t t = s_new_thing(SYM_T);
-	t->value.symbol = malloc(sizeof(struct __sym));
-	/* FIXME: no de-duplication of symbols */
-	if (!t->value.symbol) {
-		perror("malloc");
-		abort();
-	}
-	t->value.symbol->name = strdup(x);
-	return t;
-}
-
 static sexpr_t
 s_new_list(void)
 {
@@ -76,7 +62,7 @@ s_new_list_thing(void)
 }
 
 sexpr_t
-snook_read(FILE *io, const char *name)
+snook_read(FILE *io, const char *name, symtab_t symbols)
 {
 //	char parens[SNOOK_MAX_EXPR_NESTING_DEPTH + 1];
 	sexpr_t ancestors[SNOOK_MAX_EXPR_NESTING_DEPTH + 1];
@@ -157,7 +143,9 @@ snook_read(FILE *io, const char *name)
 			}
 			token[length] = '\0';
 
-			s_extend(ancestors[depth], s_new_sym_thing(token));
+			thing = s_new_thing(SYM_T);
+			thing->value.symbol = intern(symbols, token);
+			s_extend(ancestors[depth], thing);
 			continue;
 		}
 
