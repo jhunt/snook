@@ -4,8 +4,16 @@
 int
 main(int argc, char **argv)
 {
+	symtab_t symbols;
+	sexpr_t prog;
+
 	fprintf(stderr, "[[ snook. a lisp that doesn't exist. ]]\n");
-	symtab_t symbols = new_symbol_table();
-	snook_write(stdout, snook_read(stdin, "<stdin>", symbols));
+	symbols = new_symbol_table();
+	prog = snook_read(stdin, "<stdin>", symbols);
+	if (!snook_verify(prog)) {
+		fprintf(stderr, "invalid program\n");
+		return 1;
+	}
+	snook_write(stdout, prog);
 	return 0;
 }

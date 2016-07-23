@@ -67,4 +67,7 @@ snook_read(FILE *io, const char *name, symtab_t symbols);
 int
 snook_write(FILE *out, sexpr_t s);
 
+int
+snook_verify(sexpr_t s);
+
 #endif
