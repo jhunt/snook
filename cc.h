@@ -35,7 +35,6 @@ struct __box {
 	} value;
 };
 
-
 struct __cons {
 	box_t car;
 	box_t cdr;
@@ -61,12 +60,15 @@ intern(symtab_t table, const char *name);
 sym_t
 lookup(symtab_t table, const char *name);
 
+box_t box(type_t type);
+box_t box_cons(cons_t c);
+box_t box_fixnum(int x);
+box_t box_sym(sym_t s);
+
 cons_t
 cons(box_t a, box_t d);
-
 box_t
 car(cons_t c);
-
 box_t
 cdr(cons_t c);
 
