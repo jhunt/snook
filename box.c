@@ -36,3 +36,13 @@ box_sym(sym_t s)
 	t->value.symbol = s;
 	return t;
 }
+
+cons_t
+unboxed_cons(box_t b)
+{
+	if (b == NIL || b->type != CONS_T) {
+		perror("unboxed_cons: b is not a cons");
+		abort();
+	}
+	return b->value.cons;
+}

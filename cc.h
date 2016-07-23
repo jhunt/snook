@@ -64,11 +64,16 @@ box_t box(type_t type);
 box_t box_cons(cons_t c);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
+cons_t unboxed_cons(box_t b);
 
 cons_t cons(box_t a, box_t d);
 box_t car(cons_t c);
 box_t cdr(cons_t c);
 void append(cons_t *c, box_t a);
+
+#define nil(b) ((b) == NIL)
+#define atom(b) (!nil(b) && ((b)->type != CONS_T))
+int proper(box_t b);
 
 cons_t
 snook_read(FILE *io, const char *name, symtab_t symbols);
