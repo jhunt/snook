@@ -1,9 +1,14 @@
 #include "cc.h"
+#include <stdlib.h>
 
 static int
 s_write_sub(FILE *out, thing_t t)
 {
 	int i;
+	if (t == NIL) {
+		fprintf(out, "nil");
+		return 0;
+	}
 
 	switch (t->type) {
 	case TRUE_T:
@@ -18,19 +23,18 @@ s_write_sub(FILE *out, thing_t t)
 		fprintf(out, "%d", t->value.fixnum);
 		break;
 
-	case NIL_T:
-		fprintf(out, "nil");
-		break;
-
 	case SYM_T:
 		fprintf(out, "%s", t->value.symbol->name);
 		break;
 
-	case LIST_T:
+	case CONS_T:
 		fprintf(out, "(");
-		for (i = 0; i < t->value.list->length; i++) {
-			if (i != 0) fprintf(out, " ");
-			s_write_sub(out, t->value.list->things[i]);
+		while (t != NIL) {
+			s_write_sub(out, car(t->value.cons));
+			t = cdr(t->value.cons);
+			if (t != NIL) {
+				fprintf(out, " ");
+			}
 		}
 		fprintf(out, ")");
 		break;
@@ -44,14 +48,21 @@ s_write_sub(FILE *out, thing_t t)
 }
 
 int
-snook_write(FILE *out, sexpr_t s)
+snook_write(FILE *out, cons_t s)
 {
-	int i;
+	thing_t t;
 
-	for (i = 0; i < s->length; i++) {
-		s_write_sub(out, s->things[i]);
+	while (s != NIL) {
+		s_write_sub(out, car(s));
+		t = cdr(s);
+		if (t == NIL)
+			break;
+		if (t->type != CONS_T) {
+			fprintf(stderr, "write: non-cons top-level cdr (%1$d / %1$#02x)\n", t->type);
+			abort();
+		}
+		s = t->value.cons;
 		fprintf(out, "\n");
 	}
-
 	return 0;
 }

@@ -1,4 +1,4 @@
 all: driver
-driver: driver.o read.o write.o sym.o verify.o
+driver: driver.o read.o write.o sym.o cons.o verify.o
 clean:
 	rm *.o

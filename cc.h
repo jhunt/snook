@@ -8,18 +8,39 @@
 /* how large can a single source language token get (in octets) */
 #define SNOOK_MAX_TOKEN_SIZE         64
 
+#define NIL NULL
+
 typedef enum {
 	TRUE_T,     /* boolean true  */
 	FALSE_T,    /* boolean false */
 	FIXNUM_T,
-	NIL_T,      /* nil */
 	SYM_T,      /* a symbol */
-	LIST_T,
-	PROC_T,
-	PRIMOP_T,   /* primitive operation */
+	CONS_T,
 } type_t;
 
-typedef struct __sym *sym_t;
+typedef struct __cons  *cons_t;
+typedef struct __sym   *sym_t;
+typedef struct __thing *thing_t;
+
+struct __thing {
+	type_t type;
+	union {
+		char     character;
+		int      fixnum;
+		float    float32;
+		double   float64;
+		sym_t    symbol;
+		char    *string;
+		cons_t   cons;
+	} value;
+};
+
+
+struct __cons {
+	thing_t car;
+	thing_t cdr;
+};
+
 struct __sym {
 	char *name;
 };
@@ -40,34 +61,22 @@ intern(symtab_t table, const char *name);
 sym_t
 lookup(symtab_t table, const char *name);
 
-typedef struct __thing *thing_t;
-typedef struct __sexpr *sexpr_t;
+cons_t
+cons(thing_t a, thing_t d);
 
-struct __thing {
-	type_t type;
-	union {
-		char     character;
-		int      fixnum;
-		float    float32;
-		double   float64;
-		sym_t    symbol;
-		char    *string;
-		sexpr_t  list;
-	} value;
-};
+thing_t
+car(cons_t c);
 
-struct __sexpr {
-	int      length;
-	thing_t *things;
-};
+thing_t
+cdr(cons_t c);
 
-sexpr_t
+cons_t
 snook_read(FILE *io, const char *name, symtab_t symbols);
 
 int
-snook_write(FILE *out, sexpr_t s);
+snook_write(FILE *out, cons_t s);
 
 int
-snook_verify(sexpr_t s);
+snook_verify(cons_t s);
 
 #endif

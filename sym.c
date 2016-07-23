@@ -49,11 +49,10 @@ intern(symtab_t table, const char *name)
 sym_t
 lookup(symtab_t table, const char *name)
 {
-	sym_t s;
 	struct __syment *ent;
 
 	for (ent = table->first; ent; ent = ent->next)
-		if (strcmp(s->name, name) == 0)
-			return s;
+		if (strcmp(ent->symbol->name, name) == 0)
+			return ent->symbol;
 	return NULL;
 }

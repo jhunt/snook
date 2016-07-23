@@ -5,7 +5,7 @@ int
 main(int argc, char **argv)
 {
 	symtab_t symbols;
-	sexpr_t prog;
+	cons_t prog;
 
 	fprintf(stderr, "[[ snook. a lisp that doesn't exist. ]]\n");
 	symbols = new_symbol_table();
