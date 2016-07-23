@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static thing_t
-boxfor(type_t type)
+static box_t
+box(type_t type)
 {
-	thing_t t = malloc(sizeof(struct __thing));
+	box_t t = malloc(sizeof(struct __box));
 	if (!t) {
 		perror("malloc");
 		abort();
@@ -15,34 +15,34 @@ boxfor(type_t type)
 	return t;
 }
 
-static thing_t
+static box_t
 box_cons(cons_t c)
 {
-	thing_t t = boxfor(CONS_T);
+	box_t t = box(CONS_T);
 	t->value.cons = c;
 	return t;
 }
 
-static thing_t
+static box_t
 box_fixnum(int x)
 {
-	thing_t t = boxfor(FIXNUM_T);
+	box_t t = box(FIXNUM_T);
 	t->value.fixnum = x;
 	return t;
 }
 
-static thing_t
+static box_t
 box_sym(sym_t s)
 {
-	thing_t t = boxfor(SYM_T);
+	box_t t = box(SYM_T);
 	t->value.symbol = s;
 	return t;
 }
 
 static void
-append(cons_t *c, thing_t a)
+append(cons_t *c, box_t a)
 {
-	thing_t t;
+	box_t t;
 
 	if (*c == NIL) {
 		*c = cons(a, NIL);

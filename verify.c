@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 static int
-s_verify(thing_t t)
+s_verify(box_t t)
 {
 	int i;
 	if (t == NIL)
@@ -45,7 +45,7 @@ s_verify(thing_t t)
 int
 snook_verify(cons_t s)
 {
-	thing_t t;
+	box_t t;
 
 	while (s != NIL) {
 		if (!s_verify(car(s)))

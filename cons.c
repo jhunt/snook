@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 cons_t
-cons(thing_t a, thing_t d)
+cons(box_t a, box_t d)
 {
 	cons_t c = malloc(sizeof(struct __cons));
 	if (!c) {
@@ -15,7 +15,7 @@ cons(thing_t a, thing_t d)
 	return c;
 }
 
-thing_t
+box_t
 car(cons_t c)
 {
 	if (c == NIL)
@@ -23,7 +23,7 @@ car(cons_t c)
 	return c->car;
 }
 
-thing_t
+box_t
 cdr(cons_t c)
 {
 	if (c == NIL)

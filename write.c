@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 static int
-s_write_sub(FILE *out, thing_t t)
+s_write_sub(FILE *out, box_t t)
 {
 	int i;
 	if (t == NIL) {
@@ -50,7 +50,7 @@ s_write_sub(FILE *out, thing_t t)
 int
 snook_write(FILE *out, cons_t s)
 {
-	thing_t t;
+	box_t t;
 
 	while (s != NIL) {
 		s_write_sub(out, car(s));

@@ -20,9 +20,9 @@ typedef enum {
 
 typedef struct __cons  *cons_t;
 typedef struct __sym   *sym_t;
-typedef struct __thing *thing_t;
+typedef struct __box   *box_t;
 
-struct __thing {
+struct __box {
 	type_t type;
 	union {
 		char     character;
@@ -37,8 +37,8 @@ struct __thing {
 
 
 struct __cons {
-	thing_t car;
-	thing_t cdr;
+	box_t car;
+	box_t cdr;
 };
 
 struct __sym {
@@ -62,12 +62,12 @@ sym_t
 lookup(symtab_t table, const char *name);
 
 cons_t
-cons(thing_t a, thing_t d);
+cons(box_t a, box_t d);
 
-thing_t
+box_t
 car(cons_t c);
 
-thing_t
+box_t
 cdr(cons_t c);
 
 cons_t
