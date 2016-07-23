@@ -26,3 +26,7 @@
 
 (label null (p)
   (∧ (atom p) (eq p #nil)))
+
+(macro if (test conseq alt)
+  `(cond (,test ,conseq)
+         ('t    ,alt)))
