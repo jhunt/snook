@@ -54,6 +54,7 @@ snook_write(FILE *out, cons_t s)
 
 	while (s != NIL) {
 		s_write_sub(out, car(s));
+		fprintf(out, "\n");
 		t = cdr(s);
 		if (t == NIL)
 			break;
@@ -62,7 +63,6 @@ snook_write(FILE *out, cons_t s)
 			abort();
 		}
 		s = t->value.cons;
-		fprintf(out, "\n");
 	}
 	return 0;
 }
