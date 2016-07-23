@@ -65,12 +65,10 @@ box_t box_cons(cons_t c);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
 
-cons_t
-cons(box_t a, box_t d);
-box_t
-car(cons_t c);
-box_t
-cdr(cons_t c);
+cons_t cons(box_t a, box_t d);
+box_t car(cons_t c);
+box_t cdr(cons_t c);
+void append(cons_t *c, box_t a);
 
 cons_t
 snook_read(FILE *io, const char *name, symtab_t symbols);

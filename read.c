@@ -3,27 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void
-append(cons_t *c, box_t a)
-{
-	box_t t;
-
-	if (*c == NIL) {
-		*c = cons(a, NIL);
-		return;
-	}
-	while (cdr(*c) != NIL) {
-		t = cdr(*c);
-		if (t->type != CONS_T) {
-			perror("non-cons cdr");
-			abort();
-		}
-		c = &t->value.cons;
-	}
-	(*c)->cdr = box_cons(cons(a, NIL));
-	return;
-}
-
 cons_t
 snook_read(FILE *io, const char *name, symtab_t symbols)
 {
