@@ -9,15 +9,10 @@ main(int argc, char **argv)
 
 	fprintf(stderr, "[[ snook. a lisp that doesn't exist. ]]\n");
 	symbols = new_symbol_table();
-	prog = reader(stdin, "<stdin>", symbols);
-	if (!proper(prog)) {
-		fprintf(stderr, "invalid program (top-level is not a proper list)\n");
-		return 1;
+	while (!feof(stdin)) {
+		fprintf(stdout, "s:> ");
+		prog = reader(stdin, "<stdin>", symbols);
+		format(stdout, eval(prog, symbols));
 	}
-	if (!verify(prog)) {
-		fprintf(stderr, "invalid program\n");
-		return 1;
-	}
-	format(stdout, prog);
 	return 0;
 }

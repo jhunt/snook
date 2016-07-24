@@ -16,8 +16,6 @@ reader(FILE *io, const char *name, symtab_t symbols)
 	int col;
 	char c;
 
-	ancestors[depth] = NIL;
-
 	line = 1; col = 0;
 	c = getc(io);
 	while (!feof(io)) {
@@ -49,12 +47,14 @@ reader(FILE *io, const char *name, symtab_t symbols)
 			token[length] = '\0';
 
 			/* FIXME: no error checking with atoi() */
+			if (!depth)
+				return box_fixnum(atoi(token));
 			append(&ancestors[depth], box_fixnum(atoi(token)));
 			continue;
 		}
 
 		if (c == '(') {
-			ancestors[++depth] = NIL;
+			ancestors[depth++] = NIL;
 			c = getc(io);
 			continue;
 		}
@@ -66,6 +66,8 @@ reader(FILE *io, const char *name, symtab_t symbols)
 			}
 			append(&ancestors[depth - 1], ancestors[depth]);
 			depth--;
+			if (!depth)
+				return ancestors[0];
 			c = getc(io);
 			continue;
 		}
@@ -79,6 +81,8 @@ reader(FILE *io, const char *name, symtab_t symbols)
 			}
 			token[length] = '\0';
 
+			if (!depth)
+				return box_sym(intern(symbols, token));
 			append(&ancestors[depth], box_sym(intern(symbols, token)));
 			continue;
 		}
@@ -88,10 +92,10 @@ reader(FILE *io, const char *name, symtab_t symbols)
 		abort();
 	}
 
-	if (depth != 0) {
+	if (depth) {
 		fprintf(stderr, "not enough closing )'s [depth %d]\n", depth);
 		abort();
 	}
 
-	return ancestors[depth];
+	return NIL;
 }

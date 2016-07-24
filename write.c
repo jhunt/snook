@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 static int
-s_write_sub(FILE *out, box_t t)
+s_format(FILE *out, box_t t)
 {
 	int i;
 	if (t == NIL) {
@@ -30,7 +30,7 @@ s_write_sub(FILE *out, box_t t)
 	case CONS_T:
 		fprintf(out, "(");
 		while (t != NIL) {
-			s_write_sub(out, car(t));
+			s_format(out, car(t));
 			t = cdr(t);
 			if (t != NIL) {
 				fprintf(out, " ");
@@ -48,14 +48,9 @@ s_write_sub(FILE *out, box_t t)
 }
 
 int
-format(FILE *out, box_t s)
+format(FILE *out, box_t t)
 {
-	box_t t;
-
-	while (s != NIL) {
-		s_write_sub(out, car(s));
-		fprintf(out, "\n");
-		s = cdr(s);
-	}
+	s_format(out, t);
+	fprintf(out, "\n");
 	return 0;
 }

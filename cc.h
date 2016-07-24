@@ -69,8 +69,6 @@ box_t reader (FILE *io, const char *name, symtab_t symbols);
 
 int format(FILE *out, box_t s);
 
-int verify(box_t s);
-
 box_t eval(box_t expr, symtab_t env);
 
 #endif
