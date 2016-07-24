@@ -14,14 +14,6 @@ box(type_t type)
 }
 
 box_t
-box_cons(cons_t c)
-{
-	box_t t = box(CONS_T);
-	t->value.cons = c;
-	return t;
-}
-
-box_t
 box_fixnum(int x)
 {
 	box_t t = box(FIXNUM_T);

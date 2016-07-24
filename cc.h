@@ -18,26 +18,16 @@ typedef enum {
 	CONS_T,
 } type_t;
 
-typedef struct __cons  *cons_t;
 typedef struct __sym   *sym_t;
 typedef struct __box   *box_t;
 
 struct __box {
 	type_t type;
 	union {
-		char     character;
 		int      fixnum;
-		float    float32;
-		double   float64;
 		sym_t    symbol;
-		char    *string;
-		cons_t   cons;
+		box_t   *cons;
 	} value;
-};
-
-struct __cons {
-	box_t car;
-	box_t cdr;
 };
 
 struct __sym {
@@ -61,12 +51,11 @@ sym_t
 lookup(symtab_t table, const char *name);
 
 box_t box(type_t type);
-box_t box_cons(cons_t c);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
 box_t box_bool(int boolish);
 
-cons_t cons(box_t a, box_t d);
+box_t cons(box_t a, box_t d);
 box_t car(box_t c);
 box_t cdr(box_t c);
 void append(box_t *c, box_t a);

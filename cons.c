@@ -1,18 +1,19 @@
 #include "cc.h"
 #include <stdlib.h>
 
-cons_t
+box_t
 cons(box_t a, box_t d)
 {
-	cons_t c = malloc(sizeof(struct __cons));
-	if (!c) {
+	box_t t = box(CONS_T);
+	t->value.cons = malloc(2 * sizeof(box_t));
+	if (!t->value.cons) {
 		perror("malloc");
 		abort();
 	}
 
-	c->car = a;
-	c->cdr = d;
-	return c;
+	t->value.cons[0] = a;
+	t->value.cons[1] = d;
+	return t;
 }
 
 box_t
@@ -20,7 +21,7 @@ car(box_t c)
 {
 	if (c == NIL)
 		return NIL;
-	return c->value.cons->car;
+	return c->value.cons[0];
 }
 
 box_t
@@ -28,7 +29,7 @@ cdr(box_t c)
 {
 	if (c == NIL)
 		return NIL;
-	return c->value.cons->cdr;
+	return c->value.cons[1];
 }
 
 void
@@ -37,7 +38,7 @@ append(box_t *c, box_t a)
 	box_t t;
 
 	if (*c == NIL) {
-		*c = box_cons(cons(a, NIL));
+		*c = cons(a, NIL);
 		return;
 	}
 	while (cdr(*c) != NIL) {
@@ -48,6 +49,6 @@ append(box_t *c, box_t a)
 		}
 		c = &t;
 	}
-	(*c)->value.cons->cdr = box_cons(cons(a, NIL));
+	(*c)->value.cons[1] = cons(a, NIL);
 	return;
 }
