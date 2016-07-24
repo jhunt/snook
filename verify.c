@@ -5,12 +5,10 @@ int
 verify(box_t t)
 {
 	int i;
-	if (t == NIL)
+	if (t == NIL || t == TRUE || t == FALSE)
 		return 1;
 
 	switch (t->type) {
-	case TRUE_T:
-	case FALSE_T:
 	case FIXNUM_T:
 	case SYM_T:
 		return 1;

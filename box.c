@@ -28,9 +28,3 @@ box_sym(sym_t s)
 	t->value.symbol = s;
 	return t;
 }
-
-box_t
-box_bool(int boolish)
-{
-	return box(boolish ? TRUE_T : FALSE_T);
-}

@@ -9,16 +9,16 @@ s_write_sub(FILE *out, box_t t)
 		fprintf(out, "nil");
 		return 0;
 	}
+	if (t == TRUE) {
+		fprintf(out, "t");
+		return 0;
+	}
+	if (t == FALSE) {
+		fprintf(out, "f");
+		return 0;
+	}
 
 	switch (t->type) {
-	case TRUE_T:
-		fprintf(out, "t");
-		break;
-
-	case FALSE_T:
-		fprintf(out, "f");
-		break;
-
 	case FIXNUM_T:
 		fprintf(out, "%d", t->value.fixnum);
 		break;

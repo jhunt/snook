@@ -19,5 +19,5 @@ sym(box_t b, symtab_t symbols, const char *name)
 		return 0;
 
 	s = intern(symbols, name);
-	return s != NIL && s == b->value.symbol;
+	return s && s == b->value.symbol;
 }

@@ -8,11 +8,12 @@
 /* how large can a single source language token get (in octets) */
 #define SNOOK_MAX_TOKEN_SIZE         64
 
-#define NIL NULL
+#define NIL   ((box_t)0x0)
+#define TRUE  ((box_t)0x01)
+#define FALSE ((box_t)0x02)
+#define BOOL(q) ((q) ? TRUE : FALSE)
 
 typedef enum {
-	TRUE_T,     /* boolean true  */
-	FALSE_T,    /* boolean false */
 	FIXNUM_T,
 	SYM_T,      /* a symbol */
 	CONS_T,
@@ -53,7 +54,6 @@ lookup(symtab_t table, const char *name);
 box_t box(type_t type);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
-box_t box_bool(int boolish);
 
 box_t cons(box_t a, box_t d);
 box_t car(box_t c);
@@ -62,8 +62,6 @@ void append(box_t *c, box_t a);
 
 #define nil(b) ((b) == NIL)
 #define atom(b) (!nil(b) && ((b)->type != CONS_T))
-#define istrue(b) (!nil(b) && ((b)->type == TRUE_T))
-#define isfalse(b) (!nil(b) && ((b)->type == TRUE_T))
 int proper(box_t b);
 int sym(box_t b, symtab_t symbols, const char *name);
 
