@@ -54,20 +54,21 @@ reader(FILE *io, const char *name, symtab_t symbols)
 		}
 
 		if (c == '(') {
-			ancestors[depth++] = NIL;
+			depth++;
+			ancestors[depth] = NIL;
 			c = getc(io);
 			continue;
 		}
 
 		if (c == ')') {
-			if (depth == 0) {
+			if (!depth) {
 				fprintf(stderr, "too many closing )'s\n");
 				abort();
 			}
+			if (depth == 1)
+				return ancestors[depth];
 			append(&ancestors[depth - 1], ancestors[depth]);
 			depth--;
-			if (!depth)
-				return ancestors[0];
 			c = getc(io);
 			continue;
 		}

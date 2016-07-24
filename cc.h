@@ -25,6 +25,8 @@ typedef struct __box   *box_t;
 struct __box {
 	type_t type;
 	union {
+		unsigned long id;
+
 		int      fixnum;
 		sym_t    symbol;
 		box_t   *cons;
@@ -59,9 +61,14 @@ box_t cons(box_t a, box_t d);
 box_t car(box_t c);
 box_t cdr(box_t c);
 void append(box_t *c, box_t a);
+#define caar(c) (car(car(c)))
+#define cadr(c) (car(cdr(c)))
+#define caddr(c) (car(cdr(cdr(c))))
+#define cadar(c) (car(cdr(cdr(c))))
 
 #define nil(b) ((b) == NIL)
 #define atom(b) (!nil(b) && ((b)->type != CONS_T))
+int eq(box_t a, box_t b);
 int proper(box_t b);
 int sym(box_t b, symtab_t symbols, const char *name);
 

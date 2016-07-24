@@ -17,32 +17,32 @@ eval(box_t expr, symtab_t env)
 	case CONS_T:
 		/* special forms */
 		if (sym(car(expr), env, "quote"))
-			return car(cdr(expr));
+			return cadr(expr);
 
 		if (sym(car(expr), env, "atom"))
-			return BOOL(atom(eval(car(cdr(expr)), env)));
+			return BOOL(atom(eval(cadr(expr), env)));
 
 		if (sym(car(expr), env, "eq"))
-			return BOOL(
-				eval(car(cdr(expr)),      env) ==
-				eval(car(cdr(cdr(expr))), env));
+			return BOOL(eq(
+				eval(cadr(expr),  env),
+				eval(caddr(expr), env)));
 
 		if (sym(car(expr), env, "car"))
-			return car(eval(car(cdr(expr)), env));
+			return car(eval(cadr(expr), env));
 
 		if (sym(car(expr), env, "cdr"))
-			return cdr(eval(car(cdr(expr)), env));
+			return cdr(eval(cadr((expr)), env));
 
 		if (sym(car(expr), env, "cons"))
 			return cons(
-				eval(car(cdr(expr)),      env),
-				eval(car(cdr(cdr(expr))), env));
+				eval(cadr(expr),  env),
+				eval(caddr(expr), env));
 
 		if (sym(car(expr), env, "cond")) {
 			box_t rest = cdr(expr);
 			while (rest != NIL)
-				if (eval(car(car(rest)), env) == TRUE)
-					return eval(car(cdr(car(rest))), env);
+				if (eval(caar(rest), env) == TRUE)
+					return eval(cadar(rest), env);
 			return NIL;
 		}
 
