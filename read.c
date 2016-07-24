@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-cons_t
-snook_read(FILE *io, const char *name, symtab_t symbols)
+box_t
+reader(FILE *io, const char *name, symtab_t symbols)
 {
-//	char parens[SNOOK_MAX_EXPR_NESTING_DEPTH + 1];
-	cons_t ancestors[SNOOK_MAX_EXPR_NESTING_DEPTH + 1];
+	box_t ancestors[SNOOK_MAX_EXPR_NESTING_DEPTH + 1];
 	int depth = 0;
 
 	char token[SNOOK_MAX_TOKEN_SIZE + 1];
@@ -65,9 +64,7 @@ snook_read(FILE *io, const char *name, symtab_t symbols)
 				fprintf(stderr, "too many closing )'s\n");
 				abort();
 			}
-			append(&ancestors[depth - 1],
-			       ancestors[depth] == NIL ? NIL
-			                               : box_cons(ancestors[depth]));
+			append(&ancestors[depth - 1], ancestors[depth]);
 			depth--;
 			c = getc(io);
 			continue;

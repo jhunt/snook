@@ -5,7 +5,7 @@ proper(box_t b)
 {
 	while (!nil(b)) {
 		if (atom(b)) return 0;
-		b = cdr(unboxed_cons(b));
+		b = cdr(b);
 	}
 	return 1;
 }

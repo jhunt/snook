@@ -1,8 +1,8 @@
 #include "cc.h"
 #include <stdlib.h>
 
-static int
-s_verify(box_t t)
+int
+verify(box_t t)
 {
 	int i;
 	if (t == NIL)
@@ -13,6 +13,8 @@ s_verify(box_t t)
 	case FALSE_T:
 	case FIXNUM_T:
 	case SYM_T:
+		return 1;
+
 	case CONS_T:
 		return 1;
 
@@ -40,24 +42,4 @@ s_verify(box_t t)
 		fprintf(stderr, "unexpected type %1$d (%1$#02x)\n", t->type);
 		return 0;
 	}
-}
-
-int
-snook_verify(cons_t s)
-{
-	box_t t;
-
-	while (s != NIL) {
-		if (!s_verify(car(s)))
-			return 0;
-		t = cdr(s);
-		if (t == NIL)
-			break;
-		if (t->type != CONS_T) {
-			fprintf(stderr, "verify: non-cons top-level cdr (%1$d / %1$#02x)\n", t->type);
-			abort();
-		}
-		s = t->value.cons;
-	}
-	return 1;
 }

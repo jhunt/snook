@@ -16,28 +16,28 @@ cons(box_t a, box_t d)
 }
 
 box_t
-car(cons_t c)
+car(box_t c)
 {
 	if (c == NIL)
 		return NIL;
-	return c->car;
+	return c->value.cons->car;
 }
 
 box_t
-cdr(cons_t c)
+cdr(box_t c)
 {
 	if (c == NIL)
 		return NIL;
-	return c->cdr;
+	return c->value.cons->cdr;
 }
 
 void
-append(cons_t *c, box_t a)
+append(box_t *c, box_t a)
 {
 	box_t t;
 
 	if (*c == NIL) {
-		*c = cons(a, NIL);
+		*c = box_cons(cons(a, NIL));
 		return;
 	}
 	while (cdr(*c) != NIL) {
@@ -46,8 +46,8 @@ append(cons_t *c, box_t a)
 			perror("non-cons cdr");
 			abort();
 		}
-		c = &t->value.cons;
+		c = &t;
 	}
-	(*c)->cdr = box_cons(cons(a, NIL));
+	(*c)->value.cons->cdr = box_cons(cons(a, NIL));
 	return;
 }

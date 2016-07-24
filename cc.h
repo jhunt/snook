@@ -67,21 +67,20 @@ box_t box_sym(sym_t s);
 cons_t unboxed_cons(box_t b);
 
 cons_t cons(box_t a, box_t d);
-box_t car(cons_t c);
-box_t cdr(cons_t c);
-void append(cons_t *c, box_t a);
+box_t car(box_t c);
+box_t cdr(box_t c);
+void append(box_t *c, box_t a);
 
 #define nil(b) ((b) == NIL)
 #define atom(b) (!nil(b) && ((b)->type != CONS_T))
 int proper(box_t b);
 
-cons_t
-snook_read(FILE *io, const char *name, symtab_t symbols);
+box_t reader (FILE *io, const char *name, symtab_t symbols);
 
-int
-snook_write(FILE *out, cons_t s);
+int format(FILE *out, box_t s);
 
-int
-snook_verify(cons_t s);
+int verify(box_t s);
+
+box_t eval(box_t expr, symtab_t env);
 
 #endif

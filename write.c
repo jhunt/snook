@@ -30,8 +30,8 @@ s_write_sub(FILE *out, box_t t)
 	case CONS_T:
 		fprintf(out, "(");
 		while (t != NIL) {
-			s_write_sub(out, car(t->value.cons));
-			t = cdr(t->value.cons);
+			s_write_sub(out, car(t));
+			t = cdr(t);
 			if (t != NIL) {
 				fprintf(out, " ");
 			}
@@ -48,21 +48,14 @@ s_write_sub(FILE *out, box_t t)
 }
 
 int
-snook_write(FILE *out, cons_t s)
+format(FILE *out, box_t s)
 {
 	box_t t;
 
 	while (s != NIL) {
 		s_write_sub(out, car(s));
 		fprintf(out, "\n");
-		t = cdr(s);
-		if (t == NIL)
-			break;
-		if (t->type != CONS_T) {
-			fprintf(stderr, "write: non-cons top-level cdr (%1$d / %1$#02x)\n", t->type);
-			abort();
-		}
-		s = t->value.cons;
+		s = cdr(s);
 	}
 	return 0;
 }
