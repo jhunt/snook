@@ -37,12 +37,8 @@ box_sym(sym_t s)
 	return t;
 }
 
-cons_t
-unboxed_cons(box_t b)
+box_t
+box_bool(int boolish)
 {
-	if (b == NIL || b->type != CONS_T) {
-		perror("unboxed_cons: b is not a cons");
-		abort();
-	}
-	return b->value.cons;
+	return box(boolish ? TRUE_T : FALSE_T);
 }

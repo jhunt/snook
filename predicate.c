@@ -9,3 +9,15 @@ proper(box_t b)
 	}
 	return 1;
 }
+
+int
+sym(box_t b, symtab_t symbols, const char *name)
+{
+	sym_t s;
+
+	if (b == NIL || b->type != SYM_T)
+		return 0;
+
+	s = intern(symbols, name);
+	return s != NIL && s == b->value.symbol;
+}

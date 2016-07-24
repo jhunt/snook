@@ -64,7 +64,7 @@ box_t box(type_t type);
 box_t box_cons(cons_t c);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
-cons_t unboxed_cons(box_t b);
+box_t box_bool(int boolish);
 
 cons_t cons(box_t a, box_t d);
 box_t car(box_t c);
@@ -73,7 +73,10 @@ void append(box_t *c, box_t a);
 
 #define nil(b) ((b) == NIL)
 #define atom(b) (!nil(b) && ((b)->type != CONS_T))
+#define istrue(b) (!nil(b) && ((b)->type == TRUE_T))
+#define isfalse(b) (!nil(b) && ((b)->type == TRUE_T))
 int proper(box_t b);
+int sym(box_t b, symtab_t symbols, const char *name);
 
 box_t reader (FILE *io, const char *name, symtab_t symbols);
 
