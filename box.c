@@ -28,3 +28,11 @@ box_sym(sym_t s)
 	t->value.symbol = s;
 	return t;
 }
+
+box_t
+box_builtin(opfn_t f)
+{
+	box_t t = box(BUILTIN_T);
+	t->value.builtin = f;
+	return t;
+}

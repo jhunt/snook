@@ -13,14 +13,17 @@
 #define FALSE ((box_t)0x02)
 #define BOOL(q) ((q) ? TRUE : FALSE)
 
-typedef enum {
-	FIXNUM_T,
-	SYM_T,      /* a symbol */
-	CONS_T,
-} type_t;
-
 typedef struct __sym   *sym_t;
 typedef struct __box   *box_t;
+
+typedef box_t (*opfn_t)(box_t, box_t);
+
+typedef enum {
+	FIXNUM_T,
+	SYM_T,
+	CONS_T,
+	BUILTIN_T,
+} type_t;
 
 struct __box {
 	type_t type;
@@ -30,11 +33,13 @@ struct __box {
 		int      fixnum;
 		sym_t    symbol;
 		box_t   *cons;
+		opfn_t   builtin;
 	} value;
 };
 
 struct __sym {
 	char *name;
+	box_t value;
 };
 
 struct __syment {
@@ -56,6 +61,7 @@ lookup(symtab_t table, const char *name);
 box_t box(type_t type);
 box_t box_fixnum(int x);
 box_t box_sym(sym_t s);
+box_t box_builtin(opfn_t f);
 
 box_t cons(box_t a, box_t d);
 box_t car(box_t c);
