@@ -7,26 +7,28 @@
 (cond (p1 e1)  ; special
       (p2 e2)
       (pn en))
-(lambda (p1 pn) e) ; special?
-(label n lambda)   ; special?
+(fn (p1 pn) e) ; special?
+(define ...)   ; special?
+(macro (form)
+  expansion)
 
 ;;; derivatives
 
-(label ∧ (p q) ; and
+(define (∧ p q) ; and
   (cond (p q)
         (t #f)))
 
-(label ∨ (p q) ; or
+(define (∨ p q) ; or
   (cond (p  #t)
         (#t q)))
 
-(label ¬ (p) ; not
+(define (¬ p) ; not
   (cond (p  #f)
         (#t #t)))
 
-(label null (p)
+(define (null p)
   (∧ (atom p) (eq p #nil)))
 
-(macro if (test conseq alt)
+(macro (if test conseq alt)
   `(cond (,test ,conseq)
          ('t    ,alt)))
