@@ -51,7 +51,7 @@ builtin_cmp_lt(box_t a, box_t b)
 		abort();
 	}
 
-	return box_fixnum(a->value.fixnum < b->value.fixnum);
+	return BOOL(a->value.fixnum < b->value.fixnum);
 }
 
 static box_t
@@ -68,7 +68,7 @@ builtin_cmp_gt(box_t a, box_t b)
 		abort();
 	}
 
-	return box_fixnum(a->value.fixnum > b->value.fixnum);
+	return BOOL(a->value.fixnum > b->value.fixnum);
 }
 
 static void
@@ -103,9 +103,9 @@ eval(box_t expr, symtab_t env)
 		return expr;
 
 	case SYM_T:
-		return expr->value.symbol
-		    && expr->value.symbol->value ? expr->value.symbol->value
-		                                 : expr;
+		if (!expr->value.symbol->value)
+			return expr;
+		return expr->value.symbol->value;
 
 	case CONS_T:
 		/* special forms */
@@ -132,8 +132,8 @@ eval(box_t expr, symtab_t env)
 				eval(caddr(expr), env));
 
 		if (sym(car(expr), env, "cond")) {
-			box_t rest = cdr(expr);
-			while (rest != NIL)
+			box_t rest;
+			for (rest = cdr(expr); rest != NIL; rest = cdr(rest))
 				if (eval(caar(rest), env) == TRUE)
 					return eval(cadar(rest), env);
 			return NIL;

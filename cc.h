@@ -11,6 +11,8 @@
 #define NIL   ((box_t)0x0)
 #define TRUE  ((box_t)0x01)
 #define FALSE ((box_t)0x02)
+#define EOS   ((box_t)0x03)
+
 #define BOOL(q) ((q) ? TRUE : FALSE)
 
 typedef struct __sym   *sym_t;
@@ -70,7 +72,7 @@ void append(box_t *c, box_t a);
 #define caar(c) (car(car(c)))
 #define cadr(c) (car(cdr(c)))
 #define caddr(c) (car(cdr(cdr(c))))
-#define cadar(c) (car(cdr(cdr(c))))
+#define cadar(c) (car(cdr(car(c))))
 
 #define nil(b) ((b) == NIL)
 #define atom(b) (!nil(b) && ((b)->type != CONS_T))

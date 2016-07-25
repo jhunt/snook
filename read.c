@@ -29,7 +29,7 @@ reader(FILE *io, const char *name, symtab_t symbols)
 			c = getc(io);
 		}
 		if (feof(io))
-			break;
+			return EOS;
 
 		if (c == ';') {
 			while (c != '\n')
@@ -73,7 +73,7 @@ reader(FILE *io, const char *name, symtab_t symbols)
 			continue;
 		}
 
-		if (isalpha(c) || strchr("+-*/%=", c)) {
+		if (isalpha(c) || strchr("+-*/%=<>", c)) {
 			length = 0;
 			while (!feof(io) && c != '(' && c != ')' && !isspace(c) && length < SNOOK_MAX_TOKEN_SIZE) {
 				token[length++] = c;
