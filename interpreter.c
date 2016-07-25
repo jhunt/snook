@@ -103,9 +103,8 @@ eval(box_t expr, symtab_t env)
 		return expr;
 
 	case SYM_T:
-		if (!expr->value.symbol->value)
-			return expr;
-		return expr->value.symbol->value;
+		return expr->value.symbol->value == UNDEF ? expr
+		                                          : expr->value.symbol->value;
 
 	case CONS_T:
 		/* special forms */

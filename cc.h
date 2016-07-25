@@ -12,6 +12,7 @@
 #define TRUE  ((box_t)0x01)
 #define FALSE ((box_t)0x02)
 #define EOS   ((box_t)0x03)
+#define UNDEF ((box_t)0x04)
 
 #define BOOL(q) ((q) ? TRUE : FALSE)
 

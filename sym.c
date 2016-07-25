@@ -34,9 +34,10 @@ intern(symtab_t table, const char *name)
 		abort();
 	}
 	s->name = strdup(name);
-	s->value = NIL;
+	s->value = UNDEF;
 	if (strcmp(name, "t")   == 0) s->value = TRUE;
 	if (strcmp(name, "f")   == 0) s->value = FALSE;
+	if (strcmp(name, "nil") == 0) s->value = NIL;
 
 	ent = malloc(sizeof(struct __syment));
 	if (!ent) {
